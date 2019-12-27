@@ -4,7 +4,7 @@ w=1000; //Size of Grid, recommend equal height and width
 h=1000;
 var size = 25; //Size of cubes, make sure the height/width are both dividable by the size. 
 var frames = 30; //Framerate. Works with max frames tbh. 
-
+var aliveCells = 200;
 
 var squares = Array(w/size+1);
 function setup() {
@@ -30,7 +30,7 @@ function setup() {
         nextposh = 0;
         nextposw = nextposw+size;
     }
-    bringAliveMultiple(300);
+    bringAliveMultiple(aliveCells);
 }
 
 function draw() {
@@ -159,6 +159,10 @@ function changeFrameRate() {
 
 function resetFunc() {
     setup();
+}
+
+function setAliveCells() {
+    aliveCells = parseInt(document.getElementById('cells').value);
 }
 
 $(document).ready(function() {
