@@ -1,3 +1,4 @@
+//Made with ♥ by Tom Franklin
 
 w=1000; //Size of Grid, recommend equal height and width
 h=1000;
