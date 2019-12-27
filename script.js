@@ -154,9 +154,12 @@ function bringAliveMultiple(num) {
 
 function changeFrameRate() {
     frames = parseInt(document.getElementById('frames').value);
-    setup();
+    frameRate(frames);
 }
 
+function resetFunc() {
+    setup();
+}
 
 $(document).ready(function() {
 
