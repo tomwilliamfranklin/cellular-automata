@@ -151,6 +151,11 @@ function bringAliveMultiple(num) {
     }
 }
 
+function changeFrameRate() {
+    frames = parseInt(document.getElementById('frames').value);
+    setup();
+}
+
 
 $(document).ready(function() {
 
