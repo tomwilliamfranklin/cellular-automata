@@ -1,7 +1,7 @@
 //Made with ♥ by Tom Franklin
 //Not Finished ... 
-w=1000; //Size of Grid, recommend equal height and width
-h=1000;
+w=600; //Size of Grid, recommend equal height and width
+h=600;
 var size = 20; //Size of cubes, make sure the height/width are both dividable by the size. 
 var frames = 10; //Framerate. Works with max frames tbh. 
 var ruleset = [0,0,0,1,1,1,1,0];
@@ -18,8 +18,8 @@ function setup() {
             cells[f] = 0;
     }
 
-    cells[cells.length/2] = 1;
-
+    cells[Math.round(cells.length/2)] = 1;
+    console.log(cells[cells.length/2])
     for(var i = 0; i<w/size; i++) {
         for(var ii=0;ii<h/size; ii++) {
             fill('white');
@@ -33,6 +33,9 @@ function setup() {
 
 
 function draw() {
+
+    console.log(cells);
+
     for(var i = 0; i<w/size; i++) {
         for(var ii=0;ii<h/size; ii++) {
             fill('white');
