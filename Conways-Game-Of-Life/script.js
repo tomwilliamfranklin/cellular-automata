@@ -14,7 +14,7 @@ function setup() {
 
     squares[1][6] = true;
 
-    createCanvas(w, h);
+    createCanvas(w+size, h+size);
     background(200);
     nextposw = 0;
     nextposh = 0;
