@@ -1,6 +1,6 @@
 //Made with ♥ by Tom Franklin
-w=500; //Size of Grid, recommend equal height and width
-h=500;
+w=1000; //Size of Grid, recommend equal height and width
+h=1000;
 var size = 10; //Size of cubes, make sure the height/width are both dividable by the size. 
 var frames = 30; //Framerate. Works with max frames tbh. 
 var ruleset = [0,0,0,1,1,1,1,0];
@@ -32,9 +32,6 @@ function setup() {
 
 
 function draw() {
-
-    console.log(cells);
-
     for(var i = 0; i<w/size; i++) {
         for(var ii=0;ii<h/size; ii++) {
             fill('white');
