@@ -1,26 +1,26 @@
 //Made with ♥ by Tom Franklin
 w=1000; //Size of Grid, recommend equal height and width
 h=1000;
-var size = 10; //Size of cubes, make sure the height/width are both dividable by the size. 
-var frames = 30; //Framerate. Works with max frames tbh. 
-var ruleset = [0,0,0,1,1,1,1,0];
-var cells = Array(w/size);
-var generation = 0;
-var grid = [];
+let size = 10; //Size of cubes, make sure the height/width are both dividable by the size. 
+let frames = 30; //Framerate. Works with max frames tbh. 
+let ruleset = [0,0,0,1,1,1,1,0];
+let cells = Array(w/size);
+let generation = 0;
+let grid = [];
 
 function setup() {
     createCanvas(w, h);
     background(200);
     frameRate(frames);
     
-    for(var f = 0; f!=cells.length;f++) {
+    for(let f = 0; f!=cells.length;f++) {
             cells[f] = 0;
     }
 
     cells[Math.round(cells.length/2)] = 1;
 
-    for(var i = 0; i<w/size; i++) {
-        for(var ii=0;ii<h/size; ii++) {
+    for(let i = 0; i<w/size; i++) {
+        for(let ii=0;ii<h/size; ii++) {
             fill('white');
             square(ii*size,i*size, size); 
         }
@@ -32,23 +32,23 @@ function setup() {
 
 
 function draw() {
-    for(var i = 0; i<w/size; i++) {
-        for(var ii=0;ii<h/size; ii++) {
+    for(let i = 0; i<w/size; i++) {
+        for(let ii=0;ii<h/size; ii++) {
             fill('white');
             square(ii*size,i*size, size); 
         }
     }
     
-    var nextgen = Array(w/size);
+    let nextgen = Array(w/size);
     
-    for(var i = 0; i<cells.length;i++) {
-        if(cells[i-1] !=null) {
-            
+    
+    for(let i = 0; i<cells.length;i++) {
+        if(cells[i-1] !=null) {         
             var left = cells[i-1];
         } else {
             var left = 0;
         }
-        var center = cells[i];
+        let center = cells[i];
         if(cells[i+1]!=null) {
             var right = cells[i+1];
         } else {
@@ -64,9 +64,9 @@ function draw() {
         grid.shift();
     
     
-    for(var i = 0; i<grid.length; i++) {
+    for(let i = 0; i<grid.length; i++) {
         if(grid[i] != null) {
-            for(var ii=0; ii<grid[i].length;ii++) {
+            for(let ii=0; ii<grid[i].length;ii++) {
                 if(grid[i][ii] == 1) {
                     fill('#262626');
                     square(ii*size,i*size, size);
@@ -77,7 +77,7 @@ function draw() {
 }
 
 function wolframRules(a,b,c) {
-    var idx = 4*a + 2*b + c;
+    let idx = 4*a + 2*b + c;
     return ruleset[7 - idx];
 }
 

@@ -2,13 +2,13 @@
 
 w=1000; //Size of Grid, recommend equal height and width
 h=1000;
-var size = 25; //Size of cubes, make sure the height/width are both dividable by the size. 
-var frames = 30; //Framerate. Works with max frames tbh. 
-var aliveCells = 1000;
+let size = 25; //Size of cubes, make sure the height/width are both dividable by the size. 
+let frames = 30; //Framerate. Works with max frames tbh. 
+let aliveCells = 1000;
 
-var squares = Array(w/size+1);
+let squares = Array(w/size+1);
 function setup() {
-    for(var foo = 0; foo < squares.length; foo++) {
+    for(let foo = 0; foo < squares.length; foo++) {
         squares[foo] = Array(w/size+1);
     }
 
@@ -38,63 +38,34 @@ function draw() {
 }
 
 function bringAlive(w,h) {
-    var maxw = (w/size) + 1;
-    var maxh = (h/size) + 1;
+    let maxw = (w/size) + 1;
+    let maxh = (h/size) + 1;
     fill(color(0, 0, 255));
     square(w,h, size);
     squares[w/size][h/size] = true;
 }
 
-var nextFrame = Array(w/size+1);
+let nextFrame = Array(w/size+1);
 
 function ConwaysRules() {
-    for(var foo = 0; foo < nextFrame.length; foo++) {
+    for(let foo = 0; foo < nextFrame.length; foo++) {
         nextFrame[foo] = Array(w/size+1);
     }
 
     for(i=0;i<=w/size;i++) {
         for(ii=0;ii<=h/size;ii++) {
             aliveNeighbours = 0;
+            const coor = [[-1, -1], [-1, 0], [-1, +1],  //Much better than a bunch of if statements lol 
+            [ 0, -1],          [ 0, +1],
+            [+1, -1], [+1, 0], [+1, +1]];
+
+            for(var iii = 0; iii<coor.length; iii++) {
             try  {
-                if(squares[i-1][ii-1]==true) {
+                if(squares[i+coor[iii][0]][ii+coor[iii][1]]==true) {
                     aliveNeighbours++;
-                } } catch (e) {
-                }
-                try { if(squares[i][ii-1]==true) {
-                    aliveNeighbours++;
-                }  } catch (e) {
-
-                }
-               try { if(squares[i+1][ii-1]==true) {
-                    aliveNeighbours++;
-                }  } catch (e) {
-
-                }
-               try { if(squares[i-1][ii]==true) {
-                    aliveNeighbours++;
-                }  } catch (e) {
-
-                }
-               try { if(squares[i+1][ii]==true) {
-                    aliveNeighbours++;
-                }  } catch (e) {
-
-                }
-                try { if(squares[i-1][ii+1]==true) {
-                    aliveNeighbours++;
-                }  } catch (e) {
-
-                }
-                try { if(squares[i][ii+1]==true) {
-                    aliveNeighbours++;
-                }  } catch (e) {
-
-                }
-                try { if(squares[i+1][ii+1]==true) {
-
-                    aliveNeighbours++;
-                } } catch (e) {
-                }
+            } } catch (e) {
+            }
+            }
                 fill("white");
                 if(squares[i][ii]) {
                     if(aliveNeighbours < 2 || aliveNeighbours > 3) {
@@ -130,10 +101,10 @@ function ConwaysRules() {
 
 
 function bringAlive() {
-    var maxw = (w/size) + 1;
-    var maxh = (h/size) + 1;
-    var coorw =  (Math.floor((Math.random()) * maxw)) * size;
-    var coorh =  (Math.floor((Math.random()) * maxh)) * size;
+    let maxw = (w/size) + 1;
+    let maxh = (h/size) + 1;
+    let coorw =  (Math.floor((Math.random()) * maxw)) * size;
+    let coorh =  (Math.floor((Math.random()) * maxh)) * size;
     fill(color(0, 0, 255));
     square(coorw,coorh, size);
     squares[coorw/size][coorh/size] = true;
@@ -141,11 +112,11 @@ function bringAlive() {
 
 
 function bringAliveMultiple(num) {
-    for(var n = 0; n != num; n ++) {
-        var maxw = (w/size) + 1;
-        var maxh = (h/size) + 1;
-        var coorw =  (Math.floor((Math.random()) * maxw)) * size;
-        var coorh =  (Math.floor((Math.random()) * maxh)) * size;
+    for(let n = 0; n != num; n ++) {
+        let maxw = (w/size) + 1;
+        let maxh = (h/size) + 1;
+        let coorw =  (Math.floor((Math.random()) * maxw)) * size;
+        let coorh =  (Math.floor((Math.random()) * maxh)) * size;
         fill(color(0, 0, 255));
         square(coorw,coorh, size);
         squares[coorw/size][coorh/size] = true;
