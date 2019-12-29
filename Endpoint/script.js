@@ -1,8 +1,9 @@
 //Made with ♥ by Tom Franklin
 
-w=270; //Size of Grid, recommend equal height and width
-h=130;
-var frames = 30; //Framerate. Works with max frames tbh. 
+w=135; //Size of Grid, recommend equal height and width
+h=65;
+var frames = 30; //Framerate. Works with max frames tbh.
+var teams = 2; 
 //green = 4,255,0
 //blue = 26,0,255
 let img;
@@ -14,6 +15,8 @@ function preload() {
 land = [];
 cells = [];
 function setup() {
+    cells = [];
+    land = [];
     createCanvas(w, h);
     background(200);
     image(img, 0, 0, width, height);
@@ -32,16 +35,35 @@ function setup() {
 
     $("#defaultCanvas0").css({ 'height': "720px" });
     $("#defaultCanvas0").css({ 'width': "1080px" });
-    bringAlive();
+    for(var i = 0; i<teams; i++) {
+        bringAliveTeam([Math.random() * 255,Math.random() * 255,Math.random() * 255]);
+    }
 }
 
-function bringAlive() {
+
+function draw() {
+    var len = cells.length;
+    let coor = [[-1, -1], [-1, 0], [-1, +1],
+    [ 0, -1],          [ 0, +1],
+    [+1, -1], [+1, 0], [+1, +1]];
+    for(var j=0;j!=len;j++) {
+        for(var i =0; i < coor.length; i++) {
+            if(land.filter(obj => obj[0] == cells[j].x+coor[i][0] && obj[1] == cells[j].y+coor[i][1]).length != 0) {
+                bringAliveManual(cells[j].x+coor[i][0],cells[j].y+coor[i][1],cells[j].team);
+            }
+        }
+    
+    }
+}
+
+function bringAliveTeam(team) {
     var random =  (Math.floor((Math.random() * land.length)));
-    set(land[random][0], land[random][1], [Math.random() * 255,Math.random() * 255, Math.random() * 255,255]);
+    set(land[random][0], land[random][1], [team[0],team[1], team[2],255]);
     cells.push({
         x:land[random][0],
         y:land[random][1],
         alive:true,
+        team:team,
         health:100,
     });
     land.splice(random, 1);
@@ -49,12 +71,28 @@ function bringAlive() {
 }
 
 
-function bringAliveManual(w, h) {
-    set(w, h, [Math.random() * 255,Math.random() * 255, Math.random() * 255,255]);
+function bringAliveRandom() {
+    var random =  (Math.floor((Math.random() * land.length)));
+    set(land[random][0], land[random][1], [Math.random() * 255,Math.random() * 255, Math.random() * 255,255]);
+    cells.push({
+        x:land[random][0],
+        y:land[random][1],
+        alive:true,
+        team:[92, 36, 125],
+        health:100,
+    });
+    land.splice(random, 1);
+    updatePixels(); 
+}
+
+
+function bringAliveManual(w, h,team) {
+    set(w, h,[team[0],team[1], team[2],255]);
     cells.push({
         x:w,
         y:h,
         alive:true,
+        team:team,
         health:100,
     });
 
@@ -74,27 +112,18 @@ function rules() {
     }
 }
 
-function draw() {
-    var len = cells.length;
-
-    let coor = [[-1, -1], [-1, 0], [-1, +1],
-    [ 0, -1],          [ 0, +1],
-    [+1, -1], [+1, 0], [+1, +1]];
-    for(var j=0;j!=len;j++) {
-        for(var i =0; i < coor.length; i++) {
-            if(land.filter(obj => obj[0] == cells[j].x+coor[i][0] && obj[1] == cells[j].y+coor[i][1]).length != 0) {
-                bringAliveManual(cells[j].x+coor[i][0],cells[j].y+coor[i][1]);
-            }
-        }
-    }
-}
-
 function changeFrameRate() {
     frames = parseInt(document.getElementById('frames').value);
     frameRate(frames);
 }
 
+function setTeams() {
+    teams = parseInt(document.getElementById('teams').value);
+}
+
+
 function resetFunc() {
+    clear();
     setup();
 }
 
