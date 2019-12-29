@@ -17,6 +17,7 @@ function setup() {
     createCanvas(w, h);
     background(200);
     image(img, 0, 0, width, height);
+    
     nextposw = 0;
     nextposh = 0;
     frameRate(frames); // Attempt to refresh at starting FPS
@@ -28,17 +29,19 @@ function setup() {
             }
         }
     }
-    bringAlive();
 
+    $("#defaultCanvas0").css({ 'height': "720px" });
+    $("#defaultCanvas0").css({ 'width': "1080px" });
 }
 
 function bringAlive() {
     var random =  (Math.floor((Math.random() * land.length)));
     set(land[random][0], land[random][1]);
-    updatePixels();
+    updatePixels(); 
 }
 
 function draw() {
+    bringAlive();
 }
 
 function changeFrameRate() {
@@ -48,6 +51,11 @@ function changeFrameRate() {
 
 function resetFunc() {
     setup();
+}
+
+
+function mouseClicked() {
+
 }
 
 $(document).ready(function() {
