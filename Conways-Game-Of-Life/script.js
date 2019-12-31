@@ -2,7 +2,7 @@
 
 w=1000; //Size of Grid, recommend equal height and width
 h=1000;
-let size = 25; //Size of cubes, make sure the height/width are both dividable by the size. 
+let size = 20; //Size of cubes, make sure the height/width are both dividable by the size. 
 let frames = 30; //Framerate. Works with max frames tbh. 
 let aliveCells = 1000;
 

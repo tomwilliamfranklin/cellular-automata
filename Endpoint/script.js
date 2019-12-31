@@ -1,9 +1,9 @@
 //Made with ♥ by Tom Franklin
 
-const w=135; //Size of Grid, recommend equal height and width
-const h=65;
+const w=150; //Size of Grid, recommend equal height and width
+const h=70;
 let frames = 30; //Framerate. Works with max frames tbh.
-let teams = 2; 
+let teams = 6; 
 //green = 4,255,0
 //blue = 26,0,255
 let img;
@@ -40,12 +40,12 @@ function setup() {
     }
 }
 
+const coor = [[-1, -1], [-1, 0], [-1, +1],
+[ 0, -1],          [ 0, +1],
+[+1, -1], [+1, 0], [+1, +1]];
 
 function draw() {
     let len = cells.length; //has to be set rather than pointed to 
-    const coor = [[-1, -1], [-1, 0], [-1, +1],
-    [ 0, -1],          [ 0, +1],
-    [+1, -1], [+1, 0], [+1, +1]];
     for(let j=0;j!=len;j++) {
         for(let i =0; i < coor.length; i++) {
             if(land.filter(obj => obj[0] == cells[j].x+coor[i][0] && obj[1] == cells[j].y+coor[i][1]).length != 0) { //i don't even know 
@@ -54,6 +54,7 @@ function draw() {
         }
     
     }
+    updatePixels(); 
 }
 
 function bringAliveTeam(team) {
@@ -67,7 +68,6 @@ function bringAliveTeam(team) {
         health:100,
     });
     land.splice(random, 1);
-    updatePixels(); 
 }
 
 
@@ -77,12 +77,9 @@ function bringAliveRandom() {
     cells.push({
         x:land[random][0],
         y:land[random][1],
-        alive:true,
         team:[92, 36, 125],
-        health:100,
     });
     land.splice(random, 1);
-    updatePixels(); 
 }
 
 
@@ -102,7 +99,6 @@ function bringAliveManual(w, h,team) {
             break;
         }
     };
-    updatePixels(); 
 }
 
 function rules() {
