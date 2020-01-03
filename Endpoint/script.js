@@ -1,8 +1,8 @@
 //Made with ♥ by Tom Franklin
 
-const w=400; //Size of Grid, recommend equal height and width
-const h=200;
-let frames = 30; 
+const w=540; //Size of Grid, recommend equal height and width
+const h=360;
+let frames = 35; 
 let teams = 20; 
 //green = 4,255,0
 //blue = 26,0,255
@@ -11,15 +11,13 @@ let loading = false;
 function preload() {
   img = loadImage('map.jpg');
 }
-
-land = [];
-
+let teamscores = [];
 dand = new Array(w+1);
 greenLand = [];
 function setup() {
+    document.getElementById("scoreboard").innerHTML = "";
     loading = true;
     cells = [];
-    land = [];
     createCanvas(w, h);
     background(200);
     image(img, 0, 0, width, height);
@@ -37,7 +35,9 @@ function setup() {
                  dand[j][jj] = {
                      alive:false,
                      team:[],
-                     health:0
+                     health:0,
+                     age: 0,
+                     teamid:0,
                     };
                     dand[j][jj].health = 0;
                  greenLand.push([j,jj]);
@@ -48,7 +48,7 @@ function setup() {
     $("#defaultCanvas0").css({ 'height': "720px" });
     $("#defaultCanvas0").css({ 'width': "1080px" });
     for(let i = 0; i<teams; i++) {
-        bringAliveTeam(); //random team colours
+        bringAliveTeam(i); //random team colours
     }
     loading = false;
 }
@@ -67,8 +67,13 @@ function draw() {
         if(dand[j] != null) {
         for(let jj=0;jj<h;jj++) {
             if(dand[j][jj] != null) {
-                if(dand[j][jj].alive == true) {                    
-
+                if(dand[j][jj].alive == true) { 
+                    teamscores[dand[j][jj].teamid].score =  teamscores[dand[j][jj].teamid].score + dand[j][jj].health;
+                    if(age(dand[j][jj])) {
+                        cellsToKill.push([j,jj]);
+                        continue;
+                    }
+                    dand[j][jj].age++;
                 /*    if(dand[j][jj].health <= 0) {
                         cellsToKill.push([j, jj, dand[j][jj]]);
                         continue;
@@ -78,6 +83,7 @@ function draw() {
                         if(dand[j + coor[i][0]][jj + coor[i][1]] != null) {
                             if(dand[j + coor[i][0]][jj + coor[i][1]].alive == false) {                              
                                 cellsToLive.push([j + coor[i][0], jj + coor[i][1], dand[j][jj]]);
+                                continue;
                             } else if (dand[j + coor[i][0]][jj + coor[i][1]].team != dand[j][jj].team) { 
                                 cellsToFight.push([[dand[j + coor[i][0]][jj + coor[i][1]], j + coor[i][0], jj + coor[i][1]],[dand[j][jj], j, jj]]);
                             }
@@ -94,7 +100,6 @@ function draw() {
          }
         }
     }
-
     for(var e = 0; e < cellsToLive.length; e++) {
         bringAliveManual(cellsToLive[e][0], cellsToLive[e][1], cellsToLive[e][2]);
     }
@@ -104,8 +109,9 @@ function draw() {
     }
 
     for(var e = 0; e < cellsToKill.length; e++) {
-        killManual(cellsToKill[e][0], cellsToKill[e][1], cellsToKill[e][2]);
+        killManual(cellsToKill[e][0], cellsToKill[e][1]);
     }
+
     updatePixels();
 }
 
@@ -116,7 +122,18 @@ function bringAliveTeam(team) {
     dand[greenLand[randomw][0]][greenLand[randomw][1]].alive = true;
     dand[greenLand[randomw][0]][greenLand[randomw][1]].team = teamcolour;
     dand[greenLand[randomw][0]][greenLand[randomw][1]].health = 100;
+    dand[greenLand[randomw][0]][greenLand[randomw][1]].teamid = team;
+    teamscores[team] = ({
+        id:team,
+        score: 0
+    })
+
+        document.getElementById("scoreboard").innerHTML = 
+        "<h4 id='team"+team+"'>Team "+team+": "+ teamscores[team].score + "</h4>" + document.getElementById("scoreboard").innerHTML;
+        setInterval(() => {
+        document.getElementById("team"+team).innerHTML =      "Team "+team+": "+ teamscores[team].score;
     
+        },1000);    
   /*  cells.push({
         x:land[random][0],
         y:land[random][1],
@@ -129,7 +146,7 @@ function bringAliveTeam(team) {
 
 function bringAliveManual(w, h,parent) {
     let chanceOfBirth = Math.random();
-    if(chanceOfBirth > 0.5) {
+    if(chanceOfBirth > 0.3) {
     set(w, h,[parent.team[0],parent.team[1], parent.team[2],255]);
     const child = mutate(parent);
     dand[w][h] = child;
@@ -142,6 +159,17 @@ function killManual(w, h) {
     dand[w][h].team = [];
     dand[w][h].health = 0;
 }
+
+function age(cell) {
+    const cellDeathDice = Math.floor(Math.random() * ((cell.age - 1) + 1) + 1);
+    if(cellDeathDice > 25) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
 function fight(cells) {
     const cell1 = cells[0][0];
     const cell1w = cells[0][1];
@@ -162,7 +190,9 @@ function mutate(parent) {
     let child = {
         alive:false,
         team:[],
-        health:0
+        health:0,
+        age:0,
+        teamid:parent.teamid,
        };
     child.team = parent.team;
     child.alive = true;
