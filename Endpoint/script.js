@@ -1,9 +1,9 @@
 //Made with ♥ by Tom Franklin
 
-const w=1080; //Size of Grid, recommend equal height and width
-const h=720;
+const w=400; //Size of Grid, recommend equal height and width
+const h=200;
 let frames = 30; 
-let teams = 2; 
+let teams = 20; 
 //green = 4,255,0
 //blue = 26,0,255
 let img;
@@ -51,7 +51,6 @@ function setup() {
         bringAliveTeam(); //random team colours
     }
     loading = false;
-    console.log(loading);
 }
 
 const coor = [[-1, -1], [-1, 0], [-1, +1],
@@ -62,17 +61,25 @@ dunk = 0;
 function draw() {
     let leng = dand.length;
     let cellsToLive = [];
+    let cellsToKill = [];
+    let cellsToFight = [];
     for(let j=0;j<leng;j++) {
         if(dand[j] != null) {
         for(let jj=0;jj<h;jj++) {
             if(dand[j][jj] != null) {
-                if(dand[j][jj].alive == true) {
+                if(dand[j][jj].alive == true) {                    
+
+                /*    if(dand[j][jj].health <= 0) {
+                        cellsToKill.push([j, jj, dand[j][jj]]);
+                        continue;
+                    } */
+
                     for(let i = 0; i!=coor.length; i++) { 
                         if(dand[j + coor[i][0]][jj + coor[i][1]] != null) {
-                            if(dand[j + coor[i][0]][jj + coor[i][1]].alive == false) {
-                                
+                            if(dand[j + coor[i][0]][jj + coor[i][1]].alive == false) {                              
                                 cellsToLive.push([j + coor[i][0], jj + coor[i][1], dand[j][jj]]);
-                              //  bringAliveManual(j + coor[i][0], jj + coor[i][1], dand[j][jj].team);
+                            } else if (dand[j + coor[i][0]][jj + coor[i][1]].team != dand[j][jj].team) { 
+                                cellsToFight.push([[dand[j + coor[i][0]][jj + coor[i][1]], j + coor[i][0], jj + coor[i][1]],[dand[j][jj], j, jj]]);
                             }
                         } 
                     }
@@ -89,8 +96,15 @@ function draw() {
     }
 
     for(var e = 0; e < cellsToLive.length; e++) {
-
         bringAliveManual(cellsToLive[e][0], cellsToLive[e][1], cellsToLive[e][2]);
+    }
+    
+    for(var e = 0; e < cellsToFight.length; e++) {
+         fight(cellsToFight[e]);
+    }
+
+    for(var e = 0; e < cellsToKill.length; e++) {
+        killManual(cellsToKill[e][0], cellsToKill[e][1], cellsToKill[e][2]);
     }
     updatePixels();
 }
@@ -114,19 +128,50 @@ function bringAliveTeam(team) {
 }
 
 function bringAliveManual(w, h,parent) {
+    let chanceOfBirth = Math.random();
+    if(chanceOfBirth > 0.5) {
     set(w, h,[parent.team[0],parent.team[1], parent.team[2],255]);
     const child = mutate(parent);
     dand[w][h] = child;
+    }
+}
+
+function killManual(w, h) {
+    set(w, h,[4,255,0,255]);
+    dand[w][h].alive = false;
+    dand[w][h].team = [];
+    dand[w][h].health = 0;
+}
+function fight(cells) {
+    const cell1 = cells[0][0];
+    const cell1w = cells[0][1];
+    const cell1h= cells[0][2];
+    const cell2 = cells[1][0];
+    const cell2w = cells[1][1];
+    const cell2h = cells[1][2];
+    const cell1Dice = Math.floor(Math.random() * ((6 - 1) + 1) + 1);
+    const cell2Dice = Math.floor(Math.random() * ((6 - 1) + 1) + 1);
+    if(cell1.heath/100 + cell1Dice < cell2Dice + cell2.health/100) {
+        killManual(cell2w, cell2h)
+    } else {
+        killManual(cell1w, cell1h);
+    }
 }
 
 function mutate(parent) {
-    var child = parent;
-    var healthMutation = Math.random();
+    let child = {
+        alive:false,
+        team:[],
+        health:0
+       };
+    child.team = parent.team;
+    child.alive = true;
+    let healthMutation = Math.random();
     switch(true) {
-        case healthMutation > 0.8: child.health = child.health + 200
+        case healthMutation > 0.9: child.health = parent.health + 200
         break;
-        case healthMutation < 0.3: child.health = child.health - 100;
-        break;
+      //  case healthMutation < 0.3: child.health = parent.health - 100;
+      //  break;
     }
     return child;
 }
