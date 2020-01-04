@@ -11,7 +11,8 @@
         FrameRate: <input value="30"  step="1" type="number" id="frames" onkeyup="changeFrameRate()"></input>
         <button style="width:100px;"onclick="resetFunc()">Restart</button>
         <button style="width:100px;"onclick="frameRate(0)">Stop</button>
-        Teams: <input value="2"  step="1" type="number" id="teams" onkeyup="setTeams()"></input>
+        Teams: <input value="20"  step="1" type="number" id="teams" onkeyup="setTeams()"></input>
+        Grid Size is 540 x 360 but scaled upto 1080 x 720
     </div>
     <script src='script.js'>
     </script>
@@ -24,7 +25,7 @@
 .score {
     position: absolute;
     left: 15px;
-    bottom: 0;
+    bottom: 60px;
     /* padding-top: 50px; */
     transform: translateY(100px);
     color: white;
@@ -34,6 +35,18 @@
 
 .score h4 {
     margin:0;
+    font-size: 10px;
+}
+
+.square {
+    height:10px;
+    width:10px;
+    margin-right:10px;
+}
+
+.subscore {
+    display:flex;
+    padding-top:10px;
 }
 
 </style>
