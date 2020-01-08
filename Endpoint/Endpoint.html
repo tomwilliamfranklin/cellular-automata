@@ -15,12 +15,20 @@
         <button class="btn" style="width:100px;"onclick="p5canvas.frameRate(0)">Stop</button>
         <div><p>Teams:</p> <input value="20"  step="1" type="number" id="teams" onkeyup="setTeams()"></input></div>
         <div><p>Rules:</p>
-            <select onchange="setRule()" id="ruleSelect" onchange="changeRule()">
+            <select onchange="setRule()" id="ruleSelect">
                 <option value="1">Big empires get bonus</option>
                 <option value="2">Dice (Longer games)</option>
                 <option value="3">Plague</option>
                 <option value="4">No fighting!</option>
             </select></div>
+            <div><p>Pixel Density:</p>
+                <select id="pixelDensitySelect" onchange="setPixelDensity()">
+                    <option value="1">810x540</option>
+                    <option value="2">540x360</option>
+                    <option value="3">360x260</option>
+                    <option value="4">180x130</option>
+                    <option value="5">1080x720 (laggy)</option>
+                </select></div>
        <div> <p>Colour Explosions: </p> <input onclick="setExplosions()" type="checkbox" id="explosions" name="explosions" value="false"> <label for="explosions"> </div>
     </div>
     <div class="canvas-container" id="container">

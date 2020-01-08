@@ -1,7 +1,7 @@
 //Made with ♥ by Tom Franklin
 
-const w=810; //Size of Grid, recommend equal height and width
-const h=540;
+let w=810; //Size of Grid, recommend equal height and width
+let h=540;
 let frames = 30; 
 let teams = 20; 
 //green = 4,255,0
@@ -28,6 +28,8 @@ let sketch = function(p) {
         document.getElementById("scoreboard").innerHTML = "";
         loading = true;
         cells = [];
+        dand = new Array(w+1);
+        greenLand = [];
         p.createCanvas(w, h);
         p.image(img, 0, 0, w, h);
         nextposw = 0;
@@ -139,7 +141,6 @@ function bringAliveTeam(team, p) {
         id:team,
         score: 0
     })
-
         document.getElementById("scoreboard").innerHTML = 
         "<div class='subscore'><div class='square' style='background-color: rgb("+teamcolour+"');></div><h4 id='team"+team+"'>Team "+team+": "+ teamscores[team].score + "</h4> </div>" + document.getElementById("scoreboard").innerHTML;
         setInterval(() => {
@@ -312,6 +313,33 @@ function resetFunc() {
     p5canvas.setup();
 }
 
+function setPixelDensity() {
+    var selector = document.getElementById("pixelDensitySelect");
+    switch(parseInt(selector.options[selector.selectedIndex].value)) {
+        case 1: 
+            w=810;
+            h=540;
+            break;
+        case 2: 
+            w=540;
+            h=360;
+            break;
+        case 3: 
+            w=360;
+            h=260;
+            break;
+        case 4: 
+            w=180;
+            h=130;
+            break;
+        case 5: 
+            w=1080;
+            h=720;
+            break;
+    }
+    p5canvas.remove();
+    new p5(sketch, 'container');
+}
 
 function mouseClicked() {
 
