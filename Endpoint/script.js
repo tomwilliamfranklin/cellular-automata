@@ -57,7 +57,7 @@ let sketch = function(p) {
         }
         $("#defaultCanvas0").css({ 'height': "720px" });
         $("#defaultCanvas0").css({ 'width': "1080px" });
-        for(let i = 0; i<teams; i++) {
+        for(let i = 1; i<teams+1; i++) {
             bringAliveTeam(i, p); //random team colours
         }
         loading = false;
@@ -144,17 +144,11 @@ function bringAliveTeam(team, p) {
         document.getElementById("scoreboard").innerHTML = 
         "<div class='subscore'><div class='square' style='background-color: rgb("+teamcolour+"');></div><h4 id='team"+team+"'>Team "+team+": "+ teamscores[team].score + "</h4> </div>" + document.getElementById("scoreboard").innerHTML;
         setInterval(() => {
-        document.getElementById("team"+team).innerHTML =      "Team "+team+": "+ teamscores[team].score;
-    
+            if(document.getElementById("team"+team) !== null && typeof document.getElementById("team"+team) !== 'undefined') {
+                document.getElementById("team"+team).innerHTML =      "Team "+team+": "+ teamscores[team].score;
+            }
         },1000);    
-  /*  cells.push({
-        x:land[random][0],
-        y:land[random][1],
-        alive:true,
-        team:team,
-        health:100,
-    });
-    land.splice(random, 1); */
+    
 }
 
 function bringAliveManual(w, h,parent, p) {
