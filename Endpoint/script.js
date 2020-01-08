@@ -246,6 +246,20 @@ function mouseClicked() {
 
 }
 
-$(document).ready(function() {
+var FizzyText = function() {
+    this.message = 'dat.gui';
+    this.speed = 0.8;
+    this.displayOutline = false;
 
+    // Define render logic ...
+  };
+
+$(document).ready(function() {
+  var text = new FizzyText();
+  var gui = new dat.GUI();
+  gui.add(text, 'message');
+  gui.add(text, 'speed', -5, 5);
+  gui.add(text, 'displayOutline');
+  gui.add(text, 'explode');
+    
 });
